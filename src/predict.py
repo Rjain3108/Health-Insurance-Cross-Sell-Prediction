@@ -13,10 +13,9 @@ from src.config import (
 from src.preprocessing import (
     preprocess_inference_data
 )
-from src.featureEngineering import (
+from src.feature_engineering import (
     feature_engineering
 )
-
 class Predictor:
     def __init__(self):
         self.model = joblib.load(MODEL_PATH)

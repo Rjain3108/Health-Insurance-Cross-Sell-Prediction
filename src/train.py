@@ -20,7 +20,7 @@ from src.preprocessing import (
     load_data,
     preprocess_training_data
 )
-from src.featureEngineering import (
+from src.feature_engineering import (
     feature_engineering
 )
 from src.config import (
@@ -57,25 +57,28 @@ def train():
         objective="binary:logistic",
         eval_metric="auc",
         random_state=RANDOM_STATE,
-        n_estimators=500,
-        learning_rate=0.05,
-        max_depth=6,
-        min_child_weight=3,
+        n_estimators=400,
+        learning_rate=0.03,
+        max_depth=4,
+        min_child_weight=7,
         subsample=0.8,
         colsample_bytree=0.8,
-        gamma=0.5,
-        reg_alpha=0.1,
-        reg_lambda=5,
-        scale_pos_weight=scale_pos_weight,
+        gamma=2,
+        reg_alpha=0.5,
+        reg_lambda=8,
+        scale_pos_weight=3.5,
         n_jobs=-1
     )
-    model.fit(X_train, y_train)
+    model.fit( X_train, y_train, eval_set=[(X_test, y_test)], verbose=100)
+
     print("Training Completed")
     print("=" * 60)
     print("Evaluation")
     print("=" * 60)
-    y_pred = model.predict(X_test)
+    #y_pred = model.predict(X_test)
     y_prob = model.predict_proba(X_test)[:, 1]
+    y_pred = (y_prob >= 0.40).astype(int)
+    
     accuracy = accuracy_score(y_test, y_pred)
     precision = precision_score(y_test, y_pred)
     recall = recall_score(y_test, y_pred)
