@@ -27,7 +27,9 @@ st.markdown("---")
 try:
 
     response = requests.get(METRICS_URL)
-
+    st.write(f"Fetching metrics from FastAPI at: {METRICS_URL}")
+    st.write(f"Response Status Code: {response.status_code}")
+    st.write(f"Response Content: {response.content}")
     if response.status_code != 200:
         st.error("Unable to fetch metrics from FastAPI.")
         st.stop()
