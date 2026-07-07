@@ -1,18 +1,14 @@
 import json
 import pandas as pd
-
 from fastapi import APIRouter, UploadFile, File
-
 from api.schemas import (
     PredictionRequest,
     PredictionResponse
 )
-
 from src.predict import Predictor
+
 predictor = Predictor()
-
 router = APIRouter()
-
 
 @router.get("/")
 def home():
