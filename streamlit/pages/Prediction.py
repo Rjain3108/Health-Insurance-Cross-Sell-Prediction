@@ -1,6 +1,7 @@
 import streamlit as st
 import requests
 from pathlib import Path
+from config import SINGLE_PREDICTION_URL, BATCH_PREDICTION_URL, TEST_DATA_PATH
 
 predictionMethod = st.selectbox("Prediction Method", ["--Select--","Single", "Batch"])
 
@@ -32,8 +33,7 @@ if predictionMethod == "Single":
         "Policy_Sales_Channel": Policy_Sales_Channel,
         "Vintage": Vintage
     }
-        url = "https://health-insurance-cross-sell-prediction.onrender.com/predict"
-        response = requests.post( url, json=payload)
+        response = requests.post(SINGLE_PREDICTION_URL, json=payload)
         result = response.json()
         print(result)
         st.success(result["label"])
@@ -44,8 +44,7 @@ if predictionMethod == "Single":
 
 if predictionMethod == "Batch":
     st.write("You selected Batch Prediction")
-    sample_csv = Path(__file__).resolve().parents[2]/"dataset"/"test.csv"
-    with open(sample_csv, "rb") as file:
+    with open(TEST_DATA_PATH, "rb") as file:
         st.download_button(
             label="📥 Download Sample CSV",
             data=file,
@@ -61,14 +60,13 @@ if predictionMethod == "Batch":
 
     if uploaded:
         print("Uploaded file:", uploaded.name)
-        url = "https://health-insurance-cross-sell-prediction.onrender.com/batch-predict"
         files = {
             "file": (uploaded.name, uploaded.getvalue(), "text/csv")
         }
         headers = {
             "accept": "application/json"
         }
-        response = requests.post(url, headers=headers, files=files)
+        response = requests.post(BATCH_PREDICTION_URL, headers=headers, files=files)
         print("Status Code:", response.status_code)
         try:
             result = response.json()    

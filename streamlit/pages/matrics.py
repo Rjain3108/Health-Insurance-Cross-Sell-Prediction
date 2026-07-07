@@ -4,12 +4,12 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 from sklearn.metrics import ConfusionMatrixDisplay
+from config import METRICS_URL
+
 
 # -------------------------------------------------------
 # Configuration
 # -------------------------------------------------------
-
-API_URL = "http://127.0.0.1:8000/metrics"
 
 st.set_page_config(
     page_title="Model Metrics",
@@ -26,7 +26,7 @@ st.markdown("---")
 
 try:
 
-    response = requests.get(API_URL)
+    response = requests.get(METRICS_URL)
 
     if response.status_code != 200:
         st.error("Unable to fetch metrics from FastAPI.")
